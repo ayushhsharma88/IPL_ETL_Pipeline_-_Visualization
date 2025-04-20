@@ -70,7 +70,7 @@ project-root/ ├── data/ # Raw IPL dataset files(raw_data folder) ├──
 
 **Ayush Sharma**  
 *Aspiring Data Engineer | Passionate about building data pipelines & insights*  
-[LinkedIn](www.linkedin.com/in/ayushh-sharma88) • [GitHub](https://github.com/ayushhsharma88?tab=repositories)
+[LinkedIn](www.linkedin.com/in/ayushh-sharma88) • [GitHub Repo](https://github.com/ayushhsharma88?tab=repositories)
 
 ## 📄 License
 
