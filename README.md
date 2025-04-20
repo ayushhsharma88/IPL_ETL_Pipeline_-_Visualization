@@ -55,22 +55,22 @@ project-root/ ├── data/ # Raw IPL dataset files(raw_data folder) ├──
 
 ### Steps
 
-1. Clone this repo
-2. Set up Hadoop and load raw data into HDFS
-3. Run PySpark jobs for transformation
-4. Set up and run Airflow DAGs to automate the pipeline
-5. Load data into PostgreSQL
-6. Connect Power BI to PostgreSQL and create dashboards
+1. Set up Hadoop and load raw data into HDFS
+2. Run PySpark jobs for transformation
+3. Set up and run Airflow DAGs to automate the pipeline
+4. Load data into PostgreSQL
+5. Connect Power BI to PostgreSQL and create dashboards
 
 ## 📈 Sample Dashboard
 
-*(Include a screenshot or link to your Power BI dashboard here if possible)*
+![image](https://github.com/user-attachments/assets/a6347b60-1a35-4bf4-8aba-93f90086d33c)
+
 
 ## 🧑‍💻 Author
 
-**Your Name**  
+**Ayush Sharma**  
 *Aspiring Data Engineer | Passionate about building data pipelines & insights*  
-[LinkedIn](#) • [GitHub](#)
+[www.linkedin.com/in/ayushh-sharma88](#) • [https://github.com/ayushhsharma88?tab=repositories](#)
 
 ## 📄 License
 
