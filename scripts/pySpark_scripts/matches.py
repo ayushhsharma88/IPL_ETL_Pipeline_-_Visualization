@@ -49,7 +49,7 @@ matches=matches.withColumn("target_overs",col("target_overs").cast("int"))
 
 #load data to postgreSQL database
 matches.write.format("jdbc")\
- .option("url","jdbc:postgresql://192.168.89.37:5432/myProject")\
+ .option("url","jdbc:postgresql://localhost:5432/myProject")\
  .option("driver","org.postgresql.Driver")\
  .option("dbtable","matches")\
  .option("user","hadoop")\
