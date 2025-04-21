@@ -41,7 +41,7 @@ players = players.select([ trim(col(c)).alias(c) if players.schema[c].dataType.s
 
 #load data to postgreSQL database
 players.write.format("jdbc")\
- .option("url","jdbc:postgresql://192.168.89.37:5432/myProject")\
+ .option("url","jdbc:postgresql://localhost:5432/myProject")\
  .option("driver","org.postgresql.Driver")\
  .option("dbtable","players")\
  .option("user","hadoop")\
