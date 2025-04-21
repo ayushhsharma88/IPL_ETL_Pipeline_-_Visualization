@@ -51,8 +51,13 @@ deliveries.write.format("jdbc")\
  .mode('append')\
  .save()
 
+inserted_count = deliveries.count()
+
+with open("/home/hadoop/row_counts/deliveries_count.txt", "w") as f:
+    f.write(str(inserted_count))
+
 #hadoop command to move file from landing location to archives
-subprocess.run(['hdfs','dfs','-mv','/files/deliveries.csv','/archives'])
+#subprocess.run(['hdfs','dfs','-mv','/files/deliveries.csv','/archives'])
 
 print("******SPARK JOB HAS RUN SUCCESSFULLY.******")
 print("*******TRANSFORMATION HAS BEED DONE.*******")
