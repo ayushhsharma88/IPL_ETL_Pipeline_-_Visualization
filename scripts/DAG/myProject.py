@@ -34,7 +34,7 @@ default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 1, 1),
     'retries': 0,
-    'email': ['myproject.dea@gmail.com'],
+    'email': ['example@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
     'email_on_success': False
@@ -66,7 +66,7 @@ def send_table_count_email(**context):
 
     # PostgreSQL connection config
     conn = psycopg2.connect(
-        host="192.168.89.37",
+        host="localhost",
         port="5432",
         database="myProject",
         user="hadoop",
@@ -110,7 +110,7 @@ def send_table_count_email(**context):
     """
 
     send_email(
-        to=["myproject.dea@gmail.com"],
+        to=["example@gmail.com"],
         subject="Row Count Summary - Airflow DAG Success",
         html_content=html_content
     )
@@ -151,7 +151,7 @@ def send_failure_email(**context):
     """
 
     send_email(
-        to=["myproject.dea@gmail.com"],
+        to=["example@gmail.com"],
         subject=f"[Failure] Airflow DAG: {dag_id}",
         html_content=html_content,
         files=attached_logs
@@ -184,7 +184,7 @@ def send_success_email(**context):
     """
 
     send_email(
-        to=["myproject.dea@gmail.com"],
+        to=["example@gmail.com"],
         subject=f"[Success] Airflow DAG: {dag_id}",
         html_content=html_content,
         files=attached_logs
