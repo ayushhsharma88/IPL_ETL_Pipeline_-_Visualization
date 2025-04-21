@@ -43,7 +43,7 @@ deliveries = deliveries.withColumn("runs_per_over", F.sum("total_runs").over(win
 
 #load data to postgreSQL database
 deliveries.write.format("jdbc")\
- .option("url","jdbc:postgresql://192.168.89.37:5432/myProject")\
+ .option("url","jdbc:postgresql://localhost:5432/myProject")\
  .option("driver","org.postgresql.Driver")\
  .option("dbtable","deliveries")\
  .option("user","hadoop")\
