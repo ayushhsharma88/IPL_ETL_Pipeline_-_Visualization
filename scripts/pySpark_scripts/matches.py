@@ -57,8 +57,13 @@ matches.write.format("jdbc")\
  .mode('append')\
  .save()
 
+inserted_count = matches.count()
+
+with open("/home/hadoop/row_counts/matches_count.txt", "w") as f:
+    f.write(str(inserted_count))
+
 #hadoop command to move file from landing location to archives
-subprocess.run(['hdfs','dfs','-mv','/files/matches.csv','/archives'])
+#subprocess.run(['hdfs','dfs','-mv','/files/matches.csv','/archives'])
 
 print("*****SPARK JOB HAS RUN SUCCESSFULLY.*****")
 print("******TRANSFORMATION HAS BEED DONE.******")
