@@ -50,9 +50,23 @@ dag = DAG(
 
 # --- Query count and send email for specific table ---
 def send_table_count_email(**context):
-    # PostgreSQL connection config (adjust if needed)
+    import os
+    from airflow.utils.state import State
+
+    dag_run = context.get("dag_run")
+    success_tasks = {
+        ti.task_id for ti in dag_run.get_task_instances() if ti.state == State.SUCCESS
+    }
+
+    task_to_table = {
+        "run_matches": "matches",
+        "run_deliveries": "deliveries",
+        "run_players": "players"
+    }
+
+    # PostgreSQL connection config
     conn = psycopg2.connect(
-        host="192.168.89.37",  # your Windows host IP
+        host="192.168.89.37",
         port="5432",
         database="myProject",
         user="hadoop",
@@ -61,23 +75,35 @@ def send_table_count_email(**context):
 
     cur = conn.cursor()
 
-    tables = ["matches", "deliveries", "players"]
     table_info = ""
 
-    for table in tables:
+    for task_id, table in task_to_table.items():
+        if task_id not in success_tasks:
+            continue  # Skip failed task tables
+        
         try:
+            # Query total rows from the table
             cur.execute(f"SELECT COUNT(*) FROM public.{table}")
             total = cur.fetchone()[0]
 
-            # Adjust this part if you track inserted rows differently
-            inserted = total  # For now, assuming inserted = total
+            # Attempt to read inserted row count from corresponding file
+            inserted_file = f"/home/hadoop/row_counts/{table}_count.txt"
+            if os.path.exists(inserted_file):
+                with open(inserted_file, "r") as f:
+                    inserted = int(f.read().strip())
+            else:
+                inserted = "N/A"
+
+            # Add info to HTML email body
             table_info += f"<b>{table.capitalize()} Table:</b><br>Total Rows: {total}<br>Inserted Rows: {inserted}<br><br>"
+
         except Exception as e:
             table_info += f"<b>{table.capitalize()} Table:</b> Error fetching data - {str(e)}<br><br>"
 
     cur.close()
     conn.close()
 
+    # Compose the HTML email content
     html_content = f"""
     <h3>Airflow DAG Succeeded - Row Count Summary</h3>
     {table_info}
@@ -97,7 +123,7 @@ def send_failure_email(**context):
     execution_date = context['execution_date']
     timestamp = execution_date.strftime('%Y-%m-%dT%H:%M:%S')  # Match Airflow timestamp format
 
-    failed_tasks = [ti for ti in dag_run.get_task_instances() if ti.state == State.FAILED]
+    failed_tasks = [ti for ti in dag_run.get_task_instances() if ti.state == State.FAILED and ti.task_id != "generate_report_email"]
     if not failed_tasks:
         return
 
@@ -142,7 +168,7 @@ def send_success_email(**context):
 
     attached_logs = []
     for ti in dag_run.get_task_instances():
-        if ti.state == State.SUCCESS:
+        if ti.state == State.SUCCESS and ti.task_id != "generate_report_email":
             try_number = ti.try_number if ti.try_number > 0 else 1
             execution_ts = execution_date.isoformat()
             log_path = f"/home/hadoop/airflow/logs/{dag_id}_{ti.task_id}_{execution_ts}.log"
@@ -187,7 +213,7 @@ generate_report_task = PythonOperator(
     task_id='generate_report_email',
     python_callable=send_table_count_email,
     provide_context=True,
-    trigger_rule=TriggerRule.ALL_DONE,
+    trigger_rule=TriggerRule.ONE_SUCCESS,
     dag=dag
 )
 
