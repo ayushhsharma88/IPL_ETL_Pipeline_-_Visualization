@@ -35,6 +35,7 @@ It includes:
 - Automation with Apache Airflow
 - Real-world environment deployment on CentOS 9
 - Clean and structured data models
+- Get Row Count Report and logs of success and failure on mail.
 - Interactive data visualizations highlighting key IPL stats (top scorers, match outcomes, team performance, etc.)
 
 ## 📁 Project Structure
